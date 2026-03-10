@@ -14,7 +14,9 @@
   --ink-mid:   #2e261c;
   --ink-light: #6a5c4e;
   --rule:      #b8a080;
-  --card-max:  580px;
+  --card-w:    460px;
+  --card-pad-v: clamp(36px,7vw,58px);
+  --card-pad-h: clamp(26px,6vw,50px);
 }
 html { height: 100%; }
 body {
@@ -41,7 +43,7 @@ body::before {
   min-height: 100vh;
   min-height: 100dvh;
   justify-content: center;
-  padding: clamp(32px,6vw,72px) clamp(16px,4vw,40px);
+  padding: clamp(20px,4vw,48px) clamp(14px,4vw,32px);
 }
 .scene.active {
   display: flex;
@@ -51,16 +53,17 @@ body::before {
 @keyframes sceneIn  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 @keyframes sceneOut { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-10px)} }
 
-/* ── CARD — fixed min-height so all cards feel the same size ── */
+/* ── CARD — same size for all three ── */
 .card {
   position: relative;
   width: 100%;
-  max-width: var(--card-max);
-  min-height: clamp(520px, 72vh, 720px);
+  max-width: var(--card-w);
+  /* Fixed aspect ratio so all cards look identical in proportion */
+  aspect-ratio: 3 / 4.2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(44px,8vw,76px) clamp(28px,7vw,64px) clamp(56px,9vw,80px);
+  padding: var(--card-pad-v) var(--card-pad-h) calc(var(--card-pad-v) + 10px);
   border-radius: 1px;
   text-align: center;
   color: var(--ink);
@@ -75,6 +78,7 @@ body::before {
     0 56px 96px rgba(0,0,0,0.36),
     0 96px 160px rgba(0,0,0,0.24),
     inset 0 0 0 1px rgba(120,90,55,0.08);
+  overflow: hidden;
 }
 .card::after {
   content:''; position:absolute; inset:0; border-radius:1px;
@@ -89,171 +93,210 @@ body::before {
 .card > * { position:relative; z-index:2; }
 
 .edge-rule-top, .edge-rule-bottom {
-  position:absolute; left:28px; right:28px; height:1px;
+  position:absolute; left:22px; right:22px; height:1px;
   background:linear-gradient(to right, transparent, var(--rule) 25%, var(--rule) 75%, transparent);
   opacity:0.30; z-index:2;
 }
-.edge-rule-top    { top:20px; }
-.edge-rule-bottom { bottom:20px; }
+.edge-rule-top    { top:16px; }
+.edge-rule-bottom { bottom:16px; }
 
 hr.rule {
-  border:none; height:1px;
+  border:none; height:1px; flex-shrink: 0;
   background:linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
-  opacity:0.4; margin:clamp(18px,3.5vw,28px) 0;
+  opacity:0.4; margin:clamp(14px,2.5vw,20px) 0;
 }
 hr.rule2 {
-  border:none; height:1px;
+  border:none; height:1px; flex-shrink: 0;
   background:linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
-  opacity:0.4; margin:clamp(16px,3vw,24px) 0;
+  opacity:0.4; margin:clamp(12px,2vw,18px) 0;
 }
 .seal {
   position:absolute;
-  right:clamp(18px,4vw,26px);
-  bottom:clamp(28px,5vw,38px);
-  width:clamp(38px,7vw,50px);
+  right:clamp(14px,3vw,22px);
+  bottom:clamp(22px,4vw,32px);
+  width:clamp(32px,6vw,42px);
   height:auto; mix-blend-mode:multiply; opacity:0.92; z-index:3;
 }
 
 /* ── SCENE 1 ── */
-.title-wrap { display:flex; justify-content:center; margin-bottom:2px; }
-.title-wrap img { width:clamp(82%,90%,94%); height:auto; mix-blend-mode:multiply; opacity:0.80; }
+.title-wrap { display:flex; justify-content:center; margin-bottom:2px; flex-shrink:0; }
+.title-wrap img { width:88%; height:auto; mix-blend-mode:multiply; opacity:0.80; }
 .body p {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-style:italic; font-weight:300;
-  color:var(--ink-mid); letter-spacing:0.016em; line-height:1.85;
+  color:var(--ink-mid); letter-spacing:0.016em; line-height:1.8;
 }
-.body p.main    { font-size:clamp(1rem,2.2vw,1.18rem); margin-bottom:1.6em; }
-.body p.cuisine { font-size:clamp(1rem,2.2vw,1.18rem); margin-bottom:1.6em; }
-.body p.whisper { font-size:clamp(0.88rem,1.8vw,1.01rem); line-height:1.95; }
+.body p.main    { font-size:clamp(0.92rem,1.9vw,1.06rem); margin-bottom:1.2em; }
+.body p.cuisine { font-size:clamp(0.92rem,1.9vw,1.06rem); margin-bottom:1.2em; }
+.body p.whisper { font-size:clamp(0.82rem,1.6vw,0.93rem); line-height:1.82; }
 .tagline {
   font-family:'Cinzel',serif;
-  font-size:clamp(0.54rem,1.1vw,0.66rem); font-weight:300;
-  letter-spacing:0.3em; text-transform:uppercase; color:var(--ink-light);
+  font-size:clamp(0.48rem,0.95vw,0.57rem); font-weight:300;
+  letter-spacing:0.28em; text-transform:uppercase; color:var(--ink-light);
 }
-.sham { display:flex; justify-content:center; margin:clamp(24px,4vw,38px) 0; }
-.sham img { width:clamp(80px,16vw,115px); height:auto; mix-blend-mode:multiply; opacity:0.85; }
-.hnames { padding-bottom:clamp(28px,5vw,40px); }
+.sham { display:flex; justify-content:center; margin:clamp(14px,2.5vw,22px) 0; flex-shrink:0; }
+.sham img { width:clamp(64px,12vw,86px); height:auto; mix-blend-mode:multiply; opacity:0.85; }
+.hnames { padding-bottom:clamp(22px,4vw,32px); }
 .hnames p {
   font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(0.86rem,1.7vw,1rem); font-weight:400;
-  line-height:1.8; letter-spacing:0.06em; color:var(--ink-light);
+  font-size:clamp(0.78rem,1.5vw,0.90rem); font-weight:400;
+  line-height:1.72; letter-spacing:0.06em; color:var(--ink-light);
 }
 
-/* ── SCENE 2 ── */
-.note-title-wrap { display:flex; justify-content:center; margin-bottom:2px; }
-.note-title-wrap img { width:clamp(60%,70%,78%); height:auto; mix-blend-mode:multiply; opacity:0.80; }
-.note-body { padding-bottom:clamp(28px,5vw,40px); }
+/* ── SCENE 2 — same card, content vertically centered with space ── */
+.note-title-wrap { display:flex; justify-content:center; margin-bottom:2px; flex-shrink:0; }
+.note-title-wrap img { width:62%; height:auto; mix-blend-mode:multiply; opacity:0.80; }
+.note-body { padding-bottom:clamp(22px,4vw,32px); }
 .note-body p {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-style:italic; font-weight:300;
-  font-size:clamp(0.97rem,2vw,1.12rem);
-  color:var(--ink-mid); letter-spacing:0.016em; line-height:1.9;
+  font-size:clamp(0.88rem,1.75vw,1.01rem);
+  color:var(--ink-mid); letter-spacing:0.016em; line-height:1.92;
 }
-.note-body p + p { margin-top:1.8em; }
+.note-body p + p { margin-top:clamp(1.4em,3vw,2em); }
 
-/* ── ICHIGO ── */
-.ichigo-wrap { margin-bottom:4px; }
-.ichigo {
-  font-family:'Zen Kurenaido',serif;
-  font-size:clamp(1rem,2.4vw,1.3rem);
-  color:var(--ink); opacity:0.68;
-  letter-spacing:0.22em; line-height:1;
+/* ── SCENE 3 — ichigo vertical with romaji, translation horizontal ── */
+.ichigo-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding-bottom: clamp(22px,4vw,32px);
 }
-.ichigo-sub {
+
+/* Kanji + romaji side by side, vertical */
+.ichigo-kanji-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.ichigo-kanji {
+  font-family:'Zen Kurenaido',serif;
+  font-size:clamp(1.6rem,3.5vw,2.2rem);
+  color:var(--ink); opacity:0.70;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.18em;
+  line-height: 1;
+}
+/* Romaji column — one per kanji group, vertical */
+.ichigo-romaji-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  margin-top: 4px;
+}
+.ichigo-romaji-col span {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-style:italic; font-weight:300;
-  font-size:clamp(0.72rem,1.4vw,0.82rem);
-  color:var(--ink-light); letter-spacing:0.08em;
-  opacity:0.75; margin-top:7px;
+  font-size:clamp(0.44rem,0.9vw,0.54rem);
+  color:var(--ink-light); opacity:0.65;
+  letter-spacing:0.08em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  line-height: 1.4;
+}
+.ichigo-translation {
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic; font-weight:300;
+  font-size:clamp(0.70rem,1.4vw,0.80rem);
+  color:var(--ink-light); opacity:0.68;
+  letter-spacing:0.10em;
+  margin-top: 4px;
 }
 
-/* ── SCENE 3 ── */
 .payment-amount {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-style:normal; font-weight:400;
-  font-size:clamp(1.1rem,2.2vw,1.3rem);
+  font-size:clamp(0.96rem,1.9vw,1.12rem);
   letter-spacing:0.18em; color:var(--ink); opacity:0.82;
-  margin:4px 0 2px;
+  margin:2px 0;
 }
 .payment-sub {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-style:italic; font-weight:300;
-  font-size:clamp(0.78rem,1.5vw,0.88rem);
+  font-size:clamp(0.72rem,1.3vw,0.82rem);
   color:var(--ink-light); letter-spacing:0.06em; opacity:0.8;
 }
 .programme {
-  margin-top:1.6em;
+  margin-top:1.2em;
   display:flex; flex-direction:column; align-items:center;
-  padding-bottom:clamp(28px,5vw,40px);
+  padding-bottom:clamp(22px,4vw,32px);
 }
 .prog-line {
-  display:grid; grid-template-columns:52px 12px 1fr;
-  align-items:baseline; width:100%; max-width:300px; text-align:left;
+  display:grid; grid-template-columns:44px 10px 1fr;
+  align-items:baseline; width:100%; max-width:270px; text-align:left;
 }
-.prog-line.centre { grid-template-columns:1fr; justify-items:center; margin:2px 0; }
+.prog-line.centre { grid-template-columns:1fr; justify-items:center; margin:1px 0; }
 .prog-time {
-  font-family:'Cinzel',serif; font-size:clamp(0.56rem,1.1vw,0.66rem); font-weight:300;
-  letter-spacing:0.18em; color:var(--ink-light); text-align:right; padding-right:4px;
+  font-family:'Cinzel',serif; font-size:clamp(0.48rem,0.95vw,0.58rem); font-weight:300;
+  letter-spacing:0.14em; color:var(--ink-light); text-align:right; padding-right:4px;
 }
-.prog-dot { color:var(--rule); opacity:0.7; font-size:0.9rem; text-align:center; line-height:1; }
+.prog-dot { color:var(--rule); opacity:0.7; font-size:0.82rem; text-align:center; line-height:1; }
 .prog-text {
   font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-weight:300;
-  font-size:clamp(0.9rem,1.9vw,1.04rem); color:var(--ink-mid); letter-spacing:0.012em;
-  padding-left:8px; line-height:1.5;
+  font-size:clamp(0.82rem,1.6vw,0.93rem); color:var(--ink-mid); letter-spacing:0.01em;
+  padding-left:6px; line-height:1.45;
 }
-.prog-mid-dot { color:var(--rule); opacity:0.5; font-size:1.1rem; line-height:1.6; }
+.prog-mid-dot { color:var(--rule); opacity:0.5; font-size:0.95rem; line-height:1.4; }
 
 /* ── SCENE 4 ── */
 .confirm-body p {
   font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-weight:300;
-  font-size:clamp(0.97rem,2vw,1.1rem); color:var(--ink-mid); letter-spacing:0.016em; line-height:1.9;
+  font-size:clamp(0.88rem,1.75vw,1.01rem); color:var(--ink-mid); letter-spacing:0.016em; line-height:1.9;
 }
 .confirm-body p + p { margin-top:1.6em; }
 .confirm-date {
-  font-family:'Cinzel',serif; font-size:clamp(0.54rem,1.1vw,0.64rem); font-weight:300;
-  letter-spacing:0.3em; text-transform:uppercase; color:var(--ink-light);
-  padding-bottom:clamp(28px,5vw,40px); display:block;
+  font-family:'Cinzel',serif; font-size:clamp(0.48rem,0.95vw,0.57rem); font-weight:300;
+  letter-spacing:0.28em; text-transform:uppercase; color:var(--ink-light);
+  padding-bottom:clamp(22px,4vw,32px); display:block;
 }
 
 /* ── BUTTONS ── */
 .btn-wrap {
-  margin-top:clamp(24px,4vw,38px);
-  display:flex; flex-direction:column; align-items:center; gap:18px;
+  margin-top:clamp(18px,3vw,28px);
+  display:flex; flex-direction:column; align-items:center; gap:14px;
 }
 .btn-date {
-  font-family:'Cinzel',serif; font-size:clamp(0.54rem,1.1vw,0.62rem); font-weight:300;
-  letter-spacing:0.28em; text-transform:uppercase; color:rgba(220,200,175,0.50);
+  font-family:'Cinzel',serif; font-size:clamp(0.48rem,0.95vw,0.57rem); font-weight:300;
+  letter-spacing:0.26em; text-transform:uppercase; color:rgba(220,200,175,0.50);
 }
 .btn {
   display:inline-block; font-family:'Cinzel',serif;
-  font-size:clamp(0.56rem,1.1vw,0.63rem); font-weight:300;
-  letter-spacing:0.34em; text-transform:uppercase;
+  font-size:clamp(0.50rem,0.95vw,0.58rem); font-weight:300;
+  letter-spacing:0.32em; text-transform:uppercase;
   color:rgba(220,200,175,0.62); background:none; border:none;
   border-bottom:1px solid rgba(200,175,140,0.35);
-  padding-bottom:6px; cursor:pointer;
+  padding-bottom:5px; cursor:pointer;
   transition:color 0.6s ease, border-color 0.6s ease; text-decoration:none;
 }
 .btn:hover { color:rgba(220,200,175,0.92); border-bottom-color:rgba(200,175,140,0.65); }
 .btn-back {
-  font-family:'Cinzel',serif; font-size:clamp(0.46rem,0.9vw,0.52rem); font-weight:300;
-  letter-spacing:0.28em; text-transform:uppercase; color:rgba(220,200,175,0.32);
+  font-family:'Cinzel',serif; font-size:clamp(0.42rem,0.82vw,0.48rem); font-weight:300;
+  letter-spacing:0.26em; text-transform:uppercase; color:rgba(220,200,175,0.32);
   background:none; border:none; cursor:pointer; padding:0;
   transition:color 0.5s ease; text-decoration:none;
 }
 .btn-back:hover { color:rgba(220,200,175,0.62); }
 .btn-pay {
   display:inline-block; font-family:'Cinzel',serif;
-  font-size:clamp(0.58rem,1.1vw,0.66rem); font-weight:300;
-  letter-spacing:0.34em; text-transform:uppercase;
+  font-size:clamp(0.52rem,0.95vw,0.60rem); font-weight:300;
+  letter-spacing:0.32em; text-transform:uppercase;
   color:rgba(220,200,175,0.72); background:none; border:none;
   border-bottom:1px solid rgba(200,175,140,0.45);
-  padding-bottom:6px; cursor:pointer;
+  padding-bottom:5px; cursor:pointer;
   transition:color 0.6s ease, border-color 0.6s ease; text-decoration:none;
 }
 .btn-pay:hover { color:rgba(220,200,175,0.98); border-bottom-color:rgba(200,175,140,0.75); }
 
-@media(min-width:768px)  { :root { --card-max: 600px; } }
-@media(min-width:1200px) { :root { --card-max: 640px; } }
+@media(min-width:600px)  { :root { --card-w: 480px; } }
+@media(min-width:1024px) { :root { --card-w: 500px; } }
 </style>
 </head>
 <body>
@@ -325,9 +368,15 @@ hr.rule2 {
   <div class="card">
     <div class="edge-rule-top"></div>
     <div class="edge-rule-bottom"></div>
-    <div class="ichigo-wrap">
-      <p class="ichigo">一期一会</p>
-      <p class="ichigo-sub">One encounter. One lifetime.</p>
+    <div class="ichigo-block">
+      <div class="ichigo-kanji-row">
+        <span class="ichigo-kanji">一期一会</span>
+        <div class="ichigo-romaji-col">
+          <span>i·chi·go</span>
+          <span>i·chi·e</span>
+        </div>
+      </div>
+      <p class="ichigo-translation">One encounter. One lifetime.</p>
     </div>
     <hr class="rule">
     <p class="payment-amount">USD 1,500</p>
@@ -365,9 +414,15 @@ hr.rule2 {
   <div class="card">
     <div class="edge-rule-top"></div>
     <div class="edge-rule-bottom"></div>
-    <div class="ichigo-wrap">
-      <p class="ichigo">一期一会</p>
-      <p class="ichigo-sub">One encounter. One lifetime.</p>
+    <div class="ichigo-block">
+      <div class="ichigo-kanji-row">
+        <span class="ichigo-kanji">一期一会</span>
+        <div class="ichigo-romaji-col">
+          <span>i·chi·go</span>
+          <span>i·chi·e</span>
+        </div>
+      </div>
+      <p class="ichigo-translation">One encounter. One lifetime.</p>
     </div>
     <hr class="rule">
     <div class="confirm-body">
